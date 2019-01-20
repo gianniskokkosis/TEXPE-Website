@@ -80,8 +80,8 @@
                 <a href="./index.jsp" class="navbar-brand logo">
                     
                     <h2>T-Expe</h2>
-                    <div style= "color:aliceblue">
-                           <h5>Tracking Expences </h5> 
+                    <div>
+                           <h5><font color="aliceblue">Tracking Expences</font></h5> 
                     </div>   
                 </a>
             </div>

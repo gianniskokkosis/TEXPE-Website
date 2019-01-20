@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page errorPage="apperror.jsp"%>
+<%@ page import="texpeclasses.*, java.util.List" %>
+<%@ page errorPage="apperror.jsp"%> 
+
 
 <!DOCTYPE html>
 <html class="no-js" lang="en">
@@ -7,7 +9,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="author" content="IsmGroup35">
-    <meta name="description" content="loginTEXPE">
+    <meta name="description" content="ForgetPasswordTEXPE">
     <meta name="keywords" content="HTML,CSS,XML,JavaScript">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
@@ -90,7 +92,7 @@
             <nav class="collapse navbar-collapse" id="primary-menu">
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="./index.jsp">Home</a></li>
-                    <li class="active"><a href="./login.jsp">Log-in</a></li>
+                    <li><a href="./login.jsp">Log-in</a></li>
                     <li><a href="./register.jsp">Sign-Up</a></li>
                    
                     <li><a href="./about.jsp">About</a></li>
@@ -102,67 +104,41 @@
 
 
 
-
     <!--Header-area-->
       <section class="gray-bg section-padding"> 
             <div class="container" >
                 <div class="login-wrap">
                     <div class="login-content" style="background-color: #476068">
-
-        <% if(request.getAttribute("error-message") != null) { %>       
-            <div class="alert alert-danger" role="alert">
-                <%=(String)request.getAttribute("error-message") %>
-            </div>
-        <% } %>
-    
-        <% if(request.getAttribute("success-message") != null) { %>     
-            <div class="alert alert-success" role="alert">
-                <%=(String)request.getAttribute("success-message") %>
-            </div>
-        <% } %> 
-        <% if(request.getAttribute("notauth") != null) { %>     
-            <div class="alert alert-danger" role="alert">
-                <%=(String)request.getAttribute("notauth") %>
-            </div>
-        <% } %>         
-        
                         <div class="login-logo">
                         <a href="index.jsp">
                             <img src="images/Logo.png" alt="T-Expe"></a>
                         </div>
                         <div class="login-form">
-
-                        <form action="<%=request.getContextPath() %>/login" method="POST">
+                        <form action="forgotPassProcedure.jsp" method="POST">    
                             <div class="form-group">
-                                    <label>Username</label>
-                                    <input class="au-input au-input--full" type="text" name="username" placeholder="Username">
-                            </div>
-                            <div class="form-group">
-                                    <label>Password</label>
-                                    <input class="au-input au-input--full" type="password" name="password" placeholder="Password">
-                            </div>
-                           
-                            <div class="login-checkbox">
-                                    <label>
-                                        <a href="./forgotPass.jsp">Forgotten Password?</a>
-                                    </label>
-                            </div>                               
-                            <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">sign in</button>
+                                    <label>Email Address</label>
+                                    <input class="au-input au-input--full" type="email" name="email" placeholder="Email">
+                            </div>                  
+                            <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">Submit</button>
                         </form>
-                        <div class="register-link">
-                                <p>
-                                    You don't have an account?
-                                    <a href="./register.jsp">Sign Up Here</a>
-                                </p>
-                        </div>
+                        
                         </div>
                     </div>
                 </div>
             </div>
-            </section>
-    <!--Header-area/-->
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
 
-     <%@include file="footer.jsp"%>
+        </section>
+    <!--Header-area/-->
+        
+        <%@include file="footer.jsp"%>
    
     </body>
 </html>

@@ -1,8 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page errorPage="apperror.jsp"%> 
-<%@ page import="texpeclasses.* , java.util.* , java.time.* , java.text.*" %>
+<%@ page import="texpeclasses.* , java.util.* , java.time.* , java.text.* , java.util.ArrayList" %>
 <%
 User user = (User)session.getAttribute("uobj");
+ReportDAO rdao = new ReportDAO();
+
+List<Income> incomes = rdao.getIncomes(user);
+int counter = 0;
+int counter2 = 0;
+List<Expenses> expenses = rdao.getExpenses(user);
 if (user == null){
     request.setAttribute("notauth", "You are not authorized to access this resource. Please login.");
 %>
@@ -18,12 +24,12 @@ if (user == null){
     <!-- Required meta tags-->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="monthTEXPE">
+    <meta name="description" content="au theme template">
     <meta name="author" content="IsmGroup35">
     <meta name="keywords" content="">
 
     <!-- Title Page-->
-    <title>Month Balance</title>
+    <title>Year Balance</title>
     <link rel="apple-touch-icon" href="images/favicon16x16.png">
     <link rel="shortcut icon" type="image/ico" href="images/favicon16x16.png" />
 
@@ -97,6 +103,8 @@ if (user == null){
                         </li>
                             </ul>
                         </li>
+                            </ul>
+                        </li>
                     </ul>
                 </div>
             </nav>
@@ -123,12 +131,12 @@ if (user == null){
                                 <i class="fas fa-chart-bar"></i>This Period</a>
                             <ul class="list-unstyled navbar__sub-list js-sub-list">
                                  <li>
-                                    <a href="report.jsp">This report</a>
-                                </li>
-                                <li class="active has-sub">
+                                    <a href="report.jsp">Report</a>
+                                </li >
+                                <li>
                                     <a href="month.jsp">This Month</a>
                                 </li>
-                                <li>
+                                <li class="active has-sub">
                                     <a href="year.jsp">This Year</a>
                                 </li>
                             </ul>
@@ -156,7 +164,7 @@ if (user == null){
                         <div class="header-wrap">
                             <form>
                             </form>
-                            <div class="header-button">
+                            <div class="header-button">                 
                                 <div class="account-wrap">
                                     <div class="account-item clearfix js-item-menu">
                                         <div class="image">
@@ -198,18 +206,10 @@ if (user == null){
                 DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
                 Date today = Calendar.getInstance().getTime();  
                 String reportDate = df.format(today);
-                String currentMonth = reportDate.substring(3,5);
-                String monthOfYear = reportDate.substring(3,10);
-
-                MonthDAO mdao = new MonthDAO();
-
-                String monthBalance = String.format("%.02f",mdao.monthBalance(user,currentMonth));
-
+                String currentYear = reportDate.substring(6,10);
 
             %>
-
-
-
+ 
             <!-- MAIN CONTENT-->
             <div class="main-content">
                 <div class="section__content section__content--p30">
@@ -217,28 +217,92 @@ if (user == null){
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="overview-wrap">
-                                    <h2 class="title-1">Dear <%= user.getUsername() %>, your month balance for <%= monthOfYear %> is </h2>
-                                   
+                                    <h1 class="title-1"> Report</h1>
+                                  
                                 </div>
                             </div>
                         </div>
-                    </div>	
+				   </div>
                 </div>
-<br>
-<br>
+                <div class="page-container-today">
+                    
+					<br><br>
+              <h2 style="color: #022C38">Your Incomes</h2>
+              <br>
+              <br>
+					
+					<div class="table-responsive ">
+					
+						<table class="table table-bordered table-condensed">
+														
+								<tr class="bg-cyan" style="color: aliceblue">
+									<th>#</th>
+									<th>Date</th>
+									<th>Amount</th>
+									<th>Description</th>
+									<th>Category</th>									
+								</tr>
 
-            <div class="page-container-today">
-                    <div class="col-md-12">
-                        <div class="numberCircle">
-                            <div class="row-md-6">
-                             <%= monthBalance%>
-                            </div> 
-                        </div> 
-                    </div>
-                </div>  
+						<%  for(Income income : incomes) { %>	
+								<tr>
+									<td><%=++counter %></td>
+									<td><%=income.getIncomeDate() %></td>
+									<td><%=income.getIncomeAmount() %></td>
+									<td><%=income.getIncomeDescription() %></td>
+									<td><%=income.getIncomeCategory() %></td>
+									
+									<%	} %>
+									
+						
+								<%  
+						
+							if(incomes.size() == 0) { 	%>	
+									<tr>
+										<td colspan="9" class="text-center">No income found!</td>
+									</tr>	
+						<%	} %>	
+						</table>					
+						
+					</div>					
+<br><br>
+              <h2 style="color: #022C38">Your Expenses</h2>
+              <br>
+              <br>
+					
+					<div class="table-responsive">
+					
+						<table class="table table-bordered table-condensed">
+														
+								<tr class="bg-cyan"  style="color: aliceblue">
+									<th>#</th>
+									<th>Date</th>
+									<th>Amount</th>
+									<th>Description</th>
+									<th>Category</th>									
+								</tr>
+
+						<%  for(Expenses expense : expenses) { %>	
+								<tr>
+									<td><%=++counter2 %></td>
+									<td><%=expense.getExpensesDate() %></td>
+									<td><%=expense.getExpensesAmount() %></td>
+									<td><%=expense.getExpensesDescription() %></td>
+									<td><%=expense.getExpensesCategory() %></td>
+									
+									<%	} %>
+									
+						
+								<%  if(expenses.size() == 0) { 	%>	
+									<tr>
+										<td colspan="9" class="text-center">No expenses found!</td>
+									</tr>	
+						<%	} %>	
+						</table>					
+						
+					</div>					
+	            </div>
+				</div>  
             </div>
-
-
             <!-- END MAIN CONTENT-->
             <!-- END PAGE CONTAINER-->
 			<footer>

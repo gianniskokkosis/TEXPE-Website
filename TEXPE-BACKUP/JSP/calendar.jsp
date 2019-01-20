@@ -5,7 +5,7 @@
 <%
 User user = (User)session.getAttribute("uobj");
 if (user == null){
-    request.setAttribute("message", "You are not authorized to access this resource. Please login.");
+    request.setAttribute("notauth", "You are not authorized to access this resource. Please login.");
 %>
 <jsp:forward page="login.jsp" /> 
 <%
@@ -83,7 +83,7 @@ if (user == null){
                                 <i class="fas fa-copy"></i>This period</a>
                             <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
                                 <li>
-                                    <a href="week.jsp">This Week</a>
+                                    <a href="report.jsp">Report</a>
                                 </li>
                                 <li>
                                     <a href="month.jsp">This Month</a>
@@ -127,7 +127,7 @@ if (user == null){
                                 <i class="fas fa-chart-bar"></i>This Period</a>
                             <ul class="list-unstyled navbar__sub-list js-sub-list">
                                 <li>
-                                    <a href="week.jsp">This Week</a>
+                                    <a href="report.jsp">Report</a>
                                 </li>
                                 <li>
                                     <a href="month.jsp">This Month</a>
@@ -162,53 +162,10 @@ if (user == null){
                             <form>
                             </form>
                             <div class="header-button">
-                                <div class="noti-wrap">
-                                   
-                                   
-                                    <div class="noti__item js-item-menu">
-                                        <i class="zmdi zmdi-notifications"></i>
-                                        <span class="quantity">3</span>
-                                        <div class="notifi-dropdown js-dropdown">
-                                            <div class="notifi__title">
-                                                <p>You have 3 Notifications</p>
-                                            </div>
-                                            <div class="notifi__item">
-                                                <div class="bg-c1 img-cir img-40">
-                                                    <i class="zmdi zmdi-email-open"></i>
-                                                </div>
-                                                <div class="content">
-                                                    <p>Λογαριασμός ΔΕΗ</p>
-                                                    <span class="date">April 12, 2018 06:50</span>
-                                                </div>
-                                            </div>
-                                            <div class="notifi__item">
-                                                <div class="bg-c2 img-cir img-40">
-                                                    <i class="zmdi zmdi-account-box"></i>
-                                                </div>
-                                                <div class="content">
-                                                    <p>Λογαριασμός ΕΥΔΑΠ</p>
-                                                    <span class="date">April 12, 2018 06:50</span>
-                                                </div>
-                                            </div>
-                                            <div class="notifi__item">
-                                                <div class="bg-c3 img-cir img-40">
-                                                    <i class="zmdi zmdi-file-text"></i>
-                                                </div>
-                                                <div class="content">
-                                                    <p>Ασφάλεια Αυτοκινήτου</p>
-                                                    <span class="date">April 12, 2018 06:50</span>
-                                                </div>
-                                            </div>
-                                            <div class="notifi__footer">
-                                                <a href="#">All notifications</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                                 <div class="account-wrap">
                                     <div class="account-item clearfix js-item-menu">
                                         <div class="image">
-                                            <img src="images/icon/avatar-01.jpg" alt="John Doe" />
+                                            <img src="images/icon/texpeuser.jpg"/>
                                         </div>
                                         <div class="content">
                                             <a class="js-acc-btn" href="#"><%= user.getUsername()%></a>
@@ -217,7 +174,7 @@ if (user == null){
                                             <div class="info clearfix">
                                                 <div class="image">
                                                     <a href="#">
-                                                        <img src="images/icon/avatar-01.jpg" alt="John Doe" />
+                                                        <img src="images/icon/texpeuser.jpg"/>
                                                     </a>
                                                 </div>
                                                 <div class="content">
@@ -249,7 +206,7 @@ if (user == null){
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="overview-wrap">
-                                    <h2 class="title-1">Select a day</h2>
+                                    <h2 class="title-1">Calendar</h2>
                                 </div>
                             </div>
                         </div>
@@ -282,13 +239,7 @@ if (user == null){
 			<div class="footer">
 			<span><span id="footer-date" class="footer__link">Today</span></span>    
 			</div>
-		</div>
-			 
-			 
-			 
-			 
-						 
-			 
+		</div> 
 			 
     </div>
             

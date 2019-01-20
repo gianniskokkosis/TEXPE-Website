@@ -1,10 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page errorPage="apperror.jsp"%> 
-<%@ page import="texpeclasses.*" %>
+<%@ page import="texpeclasses.* , java.util.* , java.time.* , java.text.*" %>
 <%
 User user = (User)session.getAttribute("uobj");
 if (user == null){
-    request.setAttribute("message", "You are not authorized to access this resource. Please login.");
+    request.setAttribute("notauth", "You are not authorized to access this resource. Please login.");
 %>
 <jsp:forward page="login.jsp" /> 
 <%
@@ -18,7 +18,7 @@ if (user == null){
     <!-- Required meta tags-->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="au theme template">
+    <meta name="description" content="expensesTEXPE">
     <meta name="author" content="IsmGroup35">
     <meta name="keywords" content="au theme template">
 
@@ -73,16 +73,16 @@ if (user == null){
                 <div class="container-fluid">
                     <ul class="navbar-mobile__list list-unstyled">
                         <li class="has-sub">
-                            <a class="js-arrow" href="#">
+                            <a class="js-arrow" href="./today.jsp">
                                 <i class="fas fa-tachometer-alt"></i>Today</a>
                             
                         
                         <li class="has-sub">
                             <a class="js-arrow" href="#">
-                                <i class="fas fa-copy"></i>History</a>
+                                <i class="fas fa-copy"></i>This Period</a>
                             <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
                                 <li>
-                                    <a href="week.jsp">This Week</a>
+                                    <a href="report.jsp">Report</a>
                                 </li>
                                 <li>
                                     <a href="month.jsp">This Month</a>
@@ -121,10 +121,10 @@ if (user == null){
                        
                         <li class="has-sub">
                             <a class="js-arrow" href="#">
-                                <i class="fas fa-chart-bar"></i>History</a>
+                                <i class="fas fa-chart-bar"></i>This Period</a>
                             <ul class="list-unstyled navbar__sub-list js-sub-list">
                                 <li>
-                                    <a href="week.jsp">This Week</a>
+                                    <a href="report.jsp">Report</a>
                                 </li>
                                 <li>
                                     <a href="month.jsp">This Month</a>
@@ -157,53 +157,10 @@ if (user == null){
                             <form>
                             </form>
                             <div class="header-button">
-                                <div class="noti-wrap">
-                                   
-                                   
-                                    <div class="noti__item js-item-menu">
-                                        <i class="zmdi zmdi-notifications"></i>
-                                        <span class="quantity">3</span>
-                                        <div class="notifi-dropdown js-dropdown">
-                                            <div class="notifi__title">
-                                                <p>You have 3 Notifications</p>
-                                            </div>
-                                            <div class="notifi__item">
-                                                <div class="bg-c1 img-cir img-40">
-                                                    <i class="zmdi zmdi-email-open"></i>
-                                                </div>
-                                                <div class="content">
-                                                    <p>Λογαριασμός ΔΕΗ</p>
-                                                    <span class="date">April 12, 2018 06:50</span>
-                                                </div>
-                                            </div>
-                                            <div class="notifi__item">
-                                                <div class="bg-c2 img-cir img-40">
-                                                    <i class="zmdi zmdi-account-box"></i>
-                                                </div>
-                                                <div class="content">
-                                                    <p>Λογαριασμός ΕΥΔΑΠ</p>
-                                                    <span class="date">April 12, 2018 06:50</span>
-                                                </div>
-                                            </div>
-                                            <div class="notifi__item">
-                                                <div class="bg-c3 img-cir img-40">
-                                                    <i class="zmdi zmdi-file-text"></i>
-                                                </div>
-                                                <div class="content">
-                                                    <p>Ασφάλεια Αυτοκινήτου</p>
-                                                    <span class="date">April 12, 2018 06:50</span>
-                                                </div>
-                                            </div>
-                                            <div class="notifi__footer">
-                                                <a href="#">All notifications</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                                 <div class="account-wrap">
                                     <div class="account-item clearfix js-item-menu">
                                         <div class="image">
-                                            <img src="images/icon/avatar-01.jpg" alt="John Doe" />
+                                            <img src="images/icon/texpeuser.jpg"/>
                                         </div>
                                         <div class="content">
                                             <a class="js-acc-btn" href="#"><%= user.getUsername()%></a>
@@ -212,7 +169,7 @@ if (user == null){
                                             <div class="info clearfix">
                                                 <div class="image">
                                                     <a href="#">
-                                                        <img src="images/icon/avatar-01.jpg" alt="John Doe" />
+                                                        <img src="images/icon/texpeuser.jpg" />
                                                     </a>
                                                 </div>
                                                 <div class="content">
@@ -253,30 +210,56 @@ if (user == null){
                                             <div class="outcome-header">
                                                 <h3 class="message">Please input your expenses</h3> 
                                             </div>
-                                            <br>                                       
-                                            <div class="date-display">
-                                                <p class="date-message">Date : 1/11/2108</p>
-                                            </div>
-                                            <br>
+                                            <br>   
 
-                                        <form action="" method="post" novalidate="novalidate">
+                                        <form action="<%=request.getContextPath() %>/expenses" method="post">
+
                                             <div class="form-group">
+                                                <div class="income-header">
+                                                        <p class="date-message"> 
+                                                          <%  // Create an instance of SimpleDateFormat used for formatting 
+                                                            // the string representation of date (month/day/year)
+                                                            DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+
+                                                            // Get the date today using Calendar object.
+                                                            Date today = Calendar.getInstance().getTime();        
+                                                            // Using DateFormat format method we can create a string 
+                                                            // representation of a date with the defined format.
+                                                            String reportDate = df.format(today);
+                                                            %>
+                                                            <%=reportDate %>
+                                                        </p>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="login-form">
+
                                                 <label for="cc-outcome" class="control-label mb-1">Expenses</label>
-                                                <input name="cc-payment" type="text" class="form-control" placeholder="enter your expense">
+
+                                                <input name="expAmount" type="number" step="0.01" required value="" class="form-control" placeholder="enter your expense">
+
                                             </div>
                                             <div class="form-group has-success">
+
                                                 <label for="cc-description" class="control-label mb-1">Description</label>
-                                                <input name="description" type="text" class="form-control cc-name valid" placeholder="description of expense">
+
+                                                <input name="expDescription" type="text" class="form-control cc-name valid" placeholder="description of expense">
+
                                                 <span class="help-block field-validation-valid" data-valmsg-for="cc-name" data-valmsg-replace="true"></span>
+
                                             </div>
                                             <div class="form-group">
+
                                                 <label for="cc-category-outcome" class="control-label mb-1">Category</label>
-                                                <select class="form-control" name="cc-category-outcome">
+
+                                                <select class="form-control" name="expCategory">
                                                     <option value="">--- Please choose a category ----</option>
                                                     <option value="1"><span class="glyphicon glyphicon-flash"></span> Bills</option>
                                                     <option value="2">Transportation</option>
                                                     <option value="3">Entertainment</option>
                                                </select>
+
                                             </div>
                                             
                                             <div class=" ">

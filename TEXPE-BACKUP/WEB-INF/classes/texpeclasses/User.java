@@ -72,7 +72,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "Name = " + name + "|| Surname = " + surname + "|| Username = " + username + "|| Email = " + email + "|| Password = " + password;
+        return "Name = " + name + "|| Surname = " + surname + "|| Username = " + username + "|| Email = " + email;
     }
 
 }

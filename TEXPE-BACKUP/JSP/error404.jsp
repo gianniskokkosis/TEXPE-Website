@@ -80,8 +80,8 @@
                 <a href="./index.jsp" class="navbar-brand logo">
                     
                     <h2>T-Expe</h2>
-                    <div style= "color:aliceblue">
-                           <h5>Tracking Expences </h5> 
+                    <div>
+                           <h5><font color="aliceblue">Tracking Expences</font></h5> 
                     </div>   
                 </a>
             </div>
@@ -109,7 +109,7 @@
                 <div class="login-wrap">
                     <div class="login-content" style="background-color: #476068">
                         <div class="page-header">
-                            <h1>404</h1>
+                            <h1><font color="aliceblue">404</font></h1>
                         </div>
                         <div class="row">
                             <div class="col-xs-12 col-md-10 col-lg-8">
@@ -127,6 +127,12 @@
                     </div>       
                 </div>
             </div>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
         </section>
     <!--Header-area/-->
 

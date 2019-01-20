@@ -1,10 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page errorPage="apperror.jsp"%> 
-<%@ page import="texpeclasses.*" %>
+<%@ page import="texpeclasses.* , java.util.* , java.time.* , java.text.*" %>
 <%
 User user = (User)session.getAttribute("uobj");
 if (user == null){
-    request.setAttribute("message", "You are not authorized to access this resource. Please login.");
+    request.setAttribute("notauth", "You are not authorized to access this resource. Please login.");
 %>
 <jsp:forward page="login.jsp" /> 
 <%
@@ -20,7 +20,7 @@ if (user == null){
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="au theme template">
     <meta name="author" content="IsmGroup35">
-    <meta name="keywords" content="au theme template">
+    <meta name="keywords" content="">
 
     <!-- Title Page-->
     <title>Year Balance</title>
@@ -78,10 +78,10 @@ if (user == null){
                         
                         <li class="has-sub">
                             <a class="js-arrow" href="#">
-                                <i class="fas fa-copy"></i>History</a>
+                                <i class="fas fa-copy"></i>This Period</a>
                             <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
                                 <li>
-                                    <a href="week.jsp">This Week</a>
+                                    <a href="report.jsp">Report</a>
                                 </li>
                                 <li>
                                     <a href="month.jsp">This Month</a>
@@ -122,10 +122,10 @@ if (user == null){
                        
                         <li class="has-sub">
                             <a class="js-arrow" href="#">
-                                <i class="fas fa-chart-bar"></i>History</a>
+                                <i class="fas fa-chart-bar"></i>This Period</a>
                             <ul class="list-unstyled navbar__sub-list js-sub-list">
                                  <li>
-                                    <a href="week.jsp">This Week</a>
+                                    <a href="report.jsp">Report</a>
                                 </li >
                                 <li>
                                     <a href="month.jsp">This Month</a>
@@ -158,54 +158,11 @@ if (user == null){
                         <div class="header-wrap">
                             <form>
                             </form>
-                            <div class="header-button">
-                                <div class="noti-wrap">
-                                   
-                                   
-                                    <div class="noti__item js-item-menu">
-                                        <i class="zmdi zmdi-notifications"></i>
-                                        <span class="quantity">3</span>
-                                        <div class="notifi-dropdown js-dropdown">
-                                            <div class="notifi__title">
-                                                <p>You have 3 Notifications</p>
-                                            </div>
-                                            <div class="notifi__item">
-                                                <div class="bg-c1 img-cir img-40">
-                                                    <i class="zmdi zmdi-email-open"></i>
-                                                </div>
-                                                <div class="content">
-                                                    <p>Λογαριασμός ΔΕΗ</p>
-                                                    <span class="date">April 12, 2018 06:50</span>
-                                                </div>
-                                            </div>
-                                            <div class="notifi__item">
-                                                <div class="bg-c2 img-cir img-40">
-                                                    <i class="zmdi zmdi-account-box"></i>
-                                                </div>
-                                                <div class="content">
-                                                    <p>Λογαριασμός ΕΥΔΑΠ</p>
-                                                    <span class="date">April 12, 2018 06:50</span>
-                                                </div>
-                                            </div>
-                                            <div class="notifi__item">
-                                                <div class="bg-c3 img-cir img-40">
-                                                    <i class="zmdi zmdi-file-text"></i>
-                                                </div>
-                                                <div class="content">
-                                                    <p>Ασφάλεια Αυτοκινήτου</p>
-                                                    <span class="date">April 12, 2018 06:50</span>
-                                                </div>
-                                            </div>
-                                            <div class="notifi__footer">
-                                                <a href="#">All notifications</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="header-button">                 
                                 <div class="account-wrap">
                                     <div class="account-item clearfix js-item-menu">
                                         <div class="image">
-                                            <img src="images/icon/avatar-01.jpg" alt="John Doe" />
+                                            <img src="images/icon/texpeuser.jpg"/>
                                         </div>
                                         <div class="content">
                                             <a class="js-acc-btn" href="#"><%= user.getUsername()%></a>
@@ -214,7 +171,7 @@ if (user == null){
                                             <div class="info clearfix">
                                                 <div class="image">
                                                     <a href="#">
-                                                        <img src="images/icon/avatar-01.jpg" alt="John Doe" />
+                                                        <img src="images/icon/texpeuser.jpg"/>
                                                     </a>
                                                 </div>
                                                 <div class="content">
@@ -238,6 +195,18 @@ if (user == null){
                 </div>
             </header>
             <!-- HEADER DESKTOP-->
+            <%  
+                //Date
+                DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+                Date today = Calendar.getInstance().getTime();  
+                String reportDate = df.format(today);
+                String currentYear = reportDate.substring(6,10);
+
+
+                YearDAO ydao = new YearDAO();
+                String yearBalance = String.format("%.02f",ydao.yearBalance(user,currentYear));
+
+            %>
 
             <!-- MAIN CONTENT-->
             <div class="main-content">
@@ -246,23 +215,24 @@ if (user == null){
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="overview-wrap">
-                                    <h2 class="title-1">Year Balance</h2>
-                                   
+                                    <h2 class="title-1"> Dear <%= user.getUsername()%>, your balance for <%= currentYear %> is </h2>
                                 </div>
                             </div>
                         </div>
-                   
-                          <div class="col-lg-6">
-                                <div class="au-card m-b-30">
-                                    <div class="au-card-inner">
-                                        <h3 class="title-2 m-b-40">Line Chart</h3>
-                                        <canvas id="lineChart"></canvas>
-                                    </div>
-                                </div>
-                            </div>
 				   </div>
-					
                 </div>
+                <br>
+                <br>
+                <br>
+                <div class="page-container-today">
+                    <div class="col-md-12">
+                        <div class="numberCircle">
+                            <div class="row-md-6">
+                             <%= yearBalance%>
+                            </div> 
+                        </div> 
+                    </div>
+                </div>  
             </div>
             <!-- END MAIN CONTENT-->
             <!-- END PAGE CONTAINER-->
